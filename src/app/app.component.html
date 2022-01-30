@@ -1,0 +1,42 @@
+<div>
+  <div>remaining mines {{ minesToSet - flaggedFields }}</div>
+  <table style="border-spacing: 0px">
+    <tr *ngFor="let row of fields; let i = index">
+      <td
+        *ngFor="let field of row; let j = index"
+        (click)="turnField(i, j)"
+        (contextmenu)="flagField(i, j)"
+        style="width: 25px; height: 25px; flex: 1"
+        [ngClass]="i + '' + j"
+        [style.border]="
+          fields[i][j].adjacentMines === 0 ? '1px solid red' : '1px solid'
+        "
+      >
+        <div
+          *ngIf="field.isFlagged"
+          class="image"
+          [style.background-image]="'url(./assets/flagged.png)'"
+        ></div>
+        <div
+          *ngIf="!field.isFlagged && !field.isRevealed"
+          class="image"
+          [style.background-image]="'url(./assets/facingDown.png)'"
+        ></div>
+        <div
+          *ngIf="field.isRevealed && field.isMine"
+          class="image"
+          [style.background-image]="'url(./assets/bomb.png)'"
+        ></div>
+        <div
+          *ngIf="field.isRevealed && !field.isMine"
+          class="image"
+          [style.background-image]="
+            'url(./assets/' + field.adjacentMines + '.png)'
+          "
+        ></div>
+      </td>
+    </tr>
+  </table>
+  <button (click)="solve()">solve</button>
+  <button (click)="reload()">new Game</button>
+</div>
